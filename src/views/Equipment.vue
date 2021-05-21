@@ -2,13 +2,20 @@
   <div class="container-fluid px-0">
     <div class="d-flex align-items-center px-3 mt-4 mb-3">
       <h2 class="mb-0">設備列表</h2>
-      <span class="ms-auto text-teal" @click.prevent="reloadEquipment">
-        <font-awesome-icon
-          :icon="['fas', 'sync-alt']"
-          size="2x"
-          :spin="reload"
-        />
-      </span>
+      <button
+        class="btn btn-teal text-white btn-sm d-flex align-items-center ms-auto"
+        @click.prevent="reload"
+      >
+        <span class="me-2">重新整理</span>
+        <font-awesome-icon :icon="['fas', 'sync-alt']" />
+      </button>
+      <button
+        class="btn btn-teal text-white btn-sm d-flex align-items-center ms-2"
+        @click.prevent="signOut"
+      >
+        <span class="me-2">登出</span>
+        <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
+      </button>
     </div>
     <ul class="list-unstyled d-flex flex-column mb-4 px-3">
       <li
@@ -176,7 +183,6 @@ import { mapState } from 'vuex';
 export default {
   data: () => ({
     collapse: [],
-    reload: false,
   }),
   computed: {
     ...mapState('equipment', ['equipment']),
@@ -214,15 +220,20 @@ export default {
         this.collapse.push(id);
       }
     },
-    async reloadEquipment() {
-      this.reload = true;
-
+    signOut() {
+      localStorage.removeItem('token');
+      this.$toast.success('已登出');
+      this.$router.push({ path: '/' });
+    },
+    async reload() {
       const token = localStorage.getItem('token');
       const { memberId } = jwtDecode(token);
 
+      this.$store.commit('SET_LOADING', { status: '設備搜尋中', active: true });
+
       await this.$store.dispatch('equipment/getEquipment', { memberId });
 
-      this.reload = false;
+      this.$store.commit('SET_LOADING', { status: '', active: false });
     },
     transformSlotProps(props) {
       const formattedProps = {};

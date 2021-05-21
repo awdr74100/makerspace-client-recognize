@@ -9,6 +9,7 @@ import {
   faCheck,
   faTimes,
   faSyncAlt,
+  faSignOutAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 
@@ -19,6 +20,7 @@ library.add([
   faCheck,
   faTimes,
   faSyncAlt,
+  faSignOutAlt,
 ]);
 
 library.add([faClock]);

@@ -43,7 +43,7 @@ export default {
 
         this._vm.$toast.success('目標已解鎖');
       } catch (error) {
-        if (error.response.status === 401 || error.response.status === 403) {
+        if (error.response && error.response.status) {
           this._vm.$toast.error(error.response.data.message);
           router.push({ path: '/' });
           return;
@@ -71,7 +71,7 @@ export default {
 
         this._vm.$toast.success('時限已更新');
       } catch (error) {
-        if (error.response.status === 401 || error.response.status === 403) {
+        if (error.response && error.response.status) {
           this._vm.$toast.error(error.response.data.message);
           router.push({ path: '/' });
           return;
